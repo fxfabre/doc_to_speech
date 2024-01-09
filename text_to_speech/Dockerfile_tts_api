@@ -1,0 +1,12 @@
+FROM python:3.11-bullseye
+
+WORKDIR /app
+
+RUN --mount=type=bind,source=requirements.txt,target=/tmp/requirements.txt \
+    --mount=type=cache,mode=0755,target=/root/.cache/pip \
+    pip install -r /tmp/requirements.txt
+
+COPY config /app/config
+COPY src /app/src
+
+CMD ["gunicorn", "--config", "config/gunicorn.conf.py", "--worker-tmp-dir", "/dev/shm", "--log-config", "config/logging.ini", "src.fastapi_app:app"]
