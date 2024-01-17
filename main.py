@@ -34,16 +34,16 @@ def call_api_tts_and_save(text: str, audio_file_name: str | Path) -> Path:
     response.raise_for_status()
     json_content = response.json()
 
-    audio_file_path = audio_file_name.absolute().as_uri() + ".wav"
+    audio_file_path = audio_file_name.with_name(audio_file_name.stem + ".wav")
     print("Saving audio file to", audio_file_path)
 
-    Path(audio_file_path).parent.mkdir(parents=True, exist_ok=True)
+    audio_file_path.parent.mkdir(parents=True, exist_ok=True)
     scipy.io.wavfile.write(
-        audio_file_path,
+        audio_file_path.open("wb"),
         rate=json_content["rate"],
         data=np.array(json_content["data"])
     )
-    return Path(audio_file_path)
+    return audio_file_path
 
 
 if __name__ == '__main__':
