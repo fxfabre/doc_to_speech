@@ -1,0 +1,10 @@
+FROM python:3.11-bullseye
+
+WORKDIR /app
+
+RUN --mount=type=bind,source=requirements.txt,target=/tmp/requirements.txt \
+    --mount=type=cache,mode=0755,target=/root/.cache/pip \
+    pip install -r /tmp/requirements.txt \
+    pip install jupyterlab
+
+
