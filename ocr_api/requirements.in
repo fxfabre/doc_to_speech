@@ -1,2 +1,6 @@
 # OCR
 python-doctr[torch]
+pytesseract
+pillow
+opencv-python
+pandas

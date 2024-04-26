@@ -29,7 +29,7 @@ def suppression_bruit():
     gray_image = cv2.imread("images/_gray_image.jpg", cv2.IMREAD_GRAYSCALE)
 
     # Appliquer un flou gaussien pour réduire le bruit
-    blurred_image = cv2.GaussianBlur(gray_image, (5, 5), 0)
+    blurred_image = cv2.GaussianBlur(gray_image, (9, 9), 0)
 
     # Enregistrer l'image floutée
     cv2.imwrite("images/_blurred_image.jpg", blurred_image)
@@ -137,6 +137,6 @@ def boites_englobantes():
 
 # text_cleaning()
 # amelioration_contraste()
-# suppression_bruit()
+suppression_bruit()
 # deroration_image()
 boites_englobantes()
