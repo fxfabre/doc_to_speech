@@ -5,7 +5,7 @@ from pytesseract import Output
 import numpy as np
 
 # Configuration de Tesseract
-pytesseract.pytesseract.tesseract_cmd = '/usr/bin/tesseract'
+pytesseract.pytesseract.tesseract_cmd = '/usr/local/bin/tesseract'
 
 
 def rotate_image(image, angle):
@@ -18,7 +18,7 @@ def rotate_image(image, angle):
 
 
 # Chargement de l'image
-image = cv2.imread("images/page.png")
+image = cv2.imread("images_tmp/page.png")
 gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
 gray = cv2.GaussianBlur(gray, (5, 5), 0)
 
@@ -33,13 +33,21 @@ from pprint import pprint
 pprint(d, width=200)
 
 for idx, shape_info in df_txt_data.iterrows():
-    y = shape_info["left"]
-    x = shape_info["top"]
+    if shape_info["text"].strip() == "":
+        continue
+
+    print(shape_info)
+    x = shape_info["left"]
+    y = shape_info["top"]
     w = shape_info["width"]
     h = shape_info["height"]
     cv2.rectangle(image, (x, y), (x + w, y + h), color=(0, 255, 0), thickness=2)
 
-cv2.imshow("Bounding Boxes", image)
+    cv2.imshow("Tesseract txt", image)
+    cv2.waitKey(0)
+
+print("end")
+cv2.waitKey(0)
 cv2.waitKey(0)
 cv2.destroyAllWindows()
 
