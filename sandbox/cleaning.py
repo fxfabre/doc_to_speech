@@ -23,6 +23,14 @@ def gen_images():
     blurred_image = cv2.GaussianBlur(gray_image, (7, 7), 0)
     cv2.imwrite("images_tmp/blurred_image_7.jpg", blurred_image)
 
+    # Erosion des caractères, pour creer un masque des pixels à garder
+    cv2.imwrite("images_tmp/erosion_3.jpg", erosion(gray_image, 3))
+    cv2.imwrite("images_tmp/erosion_4.jpg", erosion(gray_image, 4))
+
+    # mask grey img with erosion
+    for erosion_size in [3, 4, 5, 6]:
+        cv2.imwrite(f"images_tmp/gray_masked_{erosion_size}.jpg", apply_erosion_mask(gray_image, erosion_size))
+
     return gray_image
 
 
@@ -36,10 +44,11 @@ def seuillage():
     cv2.imwrite("images_tmp/thresh.jpg", thresh)
 
     # Seuillage adaptatif
-    thresh_adaptive = cv2.adaptiveThreshold(
-        thresh, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY, 71, 2
-    )
-    cv2.imwrite("images_tmp/thresh_adaptive.jpg", thresh_adaptive)
+    for block_size in [71, 111, 131, 161, 191]:
+        thresh_adaptive = cv2.adaptiveThreshold(
+            gray_image, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY, block_size, 2
+        )
+        cv2.imwrite(f"images_tmp/thresh_adaptive_{block_size}.jpg", thresh_adaptive)
 
     # Seuillage avec la méthode de Otsu
     ret2, thresh_otsu = cv2.threshold(gray_image, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
@@ -70,6 +79,20 @@ def rotation_image(angle_in_degrees=None):
     # Enregistrer l'image pivotée
     cv2.imwrite(f"images_tmp/rotated_image_{int(angle_in_degrees)}.jpg", rotated_image)
     return rotated_image
+
+
+def erosion(image: cv2.typing.MatLike, erosion_size=4) -> cv2.typing.MatLike:
+    element = cv2.getStructuringElement(
+        cv2.MORPH_ELLIPSE, (2 * erosion_size + 1, 2 * erosion_size + 1), (erosion_size, erosion_size)
+    )
+    return cv2.erode(image, element)
+
+
+def apply_erosion_mask(image: cv2.typing.MatLike, erosion_size=4) -> cv2.typing.MatLike:
+    eroded = erosion(image, erosion_size=erosion_size)
+    _, mask = cv2.threshold(eroded, 20, 255, cv2.THRESH_BINARY_INV)
+
+    return cv2.bitwise_and(image, image, mask=mask)
 
 
 def detection_contours():
