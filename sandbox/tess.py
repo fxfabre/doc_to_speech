@@ -2,7 +2,6 @@ import cv2
 import pandas as pd
 import pytesseract
 from pytesseract import Output
-import numpy as np
 
 # Configuration de Tesseract
 pytesseract.pytesseract.tesseract_cmd = '/usr/local/bin/tesseract'
@@ -18,7 +17,7 @@ def rotate_image(image, angle):
 
 
 # Chargement de l'image
-image = cv2.imread("images_tmp/page.png")
+image = cv2.imread("images/raw_page_1.png")
 gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
 gray = cv2.GaussianBlur(gray, (5, 5), 0)
 
