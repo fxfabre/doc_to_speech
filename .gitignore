@@ -3,7 +3,8 @@ articles/
 audio_out/
 model/
 output/
-/images_tmp/
+images_tmp/
+images_backup/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
