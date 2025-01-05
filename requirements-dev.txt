@@ -1,0 +1,8 @@
+-r requirements.txt
+
+jupyterlab
+matplotlib
+
+pytest
+black
+pre-commit

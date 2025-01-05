@@ -1,6 +1,0 @@
-FROM python:3.11-bullseye
-
-WORKDIR /app
-
-RUN --mount=type=cache,mode=0755,target=/root/.cache/pip pip install 'transformers[torch]' scipy pynvml accelerate
-RUN --mount=type=cache,mode=0755,target=/root/.cache/pip pip install jupyterlab ipywidgets
