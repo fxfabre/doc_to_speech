@@ -1,7 +1,7 @@
 import logging
+from typing import Literal
 
 from pydantic import BaseModel
-from typing import Literal
 
 logger = logging.getLogger(__name__)
 
