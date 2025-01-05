@@ -1,6 +1,13 @@
 # Custom projects files
 articles/
 audio_out/
+model/
+output/
+images_tmp/
+images_backup/
+model_cache
+tests/audio_out
+tests/wip
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
@@ -163,6 +170,4 @@ cython_debug/
 #  option (not recommended) you can uncomment the following to ignore the entire idea folder.
 .idea/
 
-# Local files
-model/
-output/
+.DS_Store

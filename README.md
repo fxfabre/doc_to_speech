@@ -1,31 +1,30 @@
 # doc_to_speech
 Book reader : From word / pdf to audio
 
-Chaque sous dossier est un projet / une API indépendante :
-- tesseract_fast_api : en developpement
+Un dossier par fonctionnalité :
+- ocr : reconnaissance de caractères sur un pdf / une image
 - text_to_speech : TTS avec suno / bark
 
 
-## Exemple d'utilisation
+## Text to speech
+Sources :
+- Bark model : https://huggingface.co/docs/transformers/model_doc/bark
+- TTS model from facebook : https://huggingface.co/facebook/tts_transformer-fr-cv7_css10
+- Packaged espeak API : https://github.com/parente/espeakbox
 
-Lancement de l'API :
-- `docker compose up --build tts-api`
+Configure Accelerate
+- To optimize GPU usage : [accelerate](https://huggingface.co/docs/accelerate/basic_tutorials/install)
+- Run `accelerate config` & check config : `accelerate env`
+- Config file at `./model/accelerate/default_config.yaml`
 
-Generation de la voix :
-```python
-import requests
-import scipy
-import numpy as np
 
-body = {
-    "language": "fr",
-    "text": "Ceci est un test de génération de parole."
-}
-response = requests.post("http://localhost:5000/api/v1/tts", json=body)
-
-scipy.io.wavfile.write(
-    "sample.wav",
-    rate=response.json()["rate"],
-    data=np.array(response.json()["data"])
-)
-```
+## Setup project
+1. Create `.env` file with :
+    ```
+    SUNO_USE_SMALL_MODELS=true
+    SUNO_ENABLE_MPS=true
+    HF_HOME=./model_cache
+    ```
+2. Install `uv`
+2. Install dependencies : `uv pip install -r requirements.txt`
+3. Run : `python main.py`
