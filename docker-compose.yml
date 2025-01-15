@@ -1,7 +1,7 @@
 services:
   notebook-tts-bark:
     build:
-      context: text_to_speech
+      context: text_to_speech_api
       dockerfile: Dockerfile_notebook
     container_name: text_to_speech_bark_GPU
     command: jupyter lab --ip=0.0.0.0 --allow-root --port=8901
@@ -25,7 +25,7 @@ services:
 
   tts-api:
     build:
-      context: text_to_speech
+      context: text_to_speech_api
       dockerfile: Dockerfile_tts_api
     container_name: tts_api
     environment:
@@ -34,4 +34,4 @@ services:
       - 5000:5000
     volumes:
       - $PWD/model:/model
-      - $PWD/text_to_speech:/app
+      - $PWD/text_to_speech_api:/app
